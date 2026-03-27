@@ -10,6 +10,9 @@ services:
       CLAUDE_WEB_SESSION_KEY: ${CLAUDE_WEB_SESSION_KEY:-}
       CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE:-}
       TZ: ${OPENCLAW_TZ:-UTC}
+      MCPORTER_CONFIG: /home/node/.openclaw/config/mcporter.json
+      PLAYWRIGHT_BROWSERS_PATH: /home/node/.openclaw/ms-playwright
+      CDP_PROXY_HOST: host.docker.internal
     volumes:
       - ${OPENCLAW_CONFIG_DIR}:/home/node/.openclaw
       - ${OPENCLAW_WORKSPACE_DIR}:/home/node/.openclaw/workspace
@@ -21,9 +24,11 @@ services:
       # - /var/run/docker.sock:/var/run/docker.sock
     # group_add:
     #   - "${DOCKER_GID:-999}"
+    # network_mode: "host"
     ports:
       - "${OPENCLAW_GATEWAY_PORT:-18789}:18789"
       - "${OPENCLAW_BRIDGE_PORT:-18790}:18790"
+      - "18792:18792"
     init: true
     restart: unless-stopped
     command:
